@@ -1,3 +1,5 @@
+console.log("FormExtension loaded!");
+
 export const FormExtension = {
   name: 'Forms',
   type: 'response',
@@ -13,119 +15,193 @@ export const FormExtension = {
     formContainer.classList.add('form-container');
     let currentStep = 1;
 
-    formContainer.innerHTML = `<style>
-    /* -- All your original style definitions preserved here -- */
-    @import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap');
-    .form-container { font-family: "Host Grotesk", serif; width: 100%; background: #fff; padding: 20px; border-radius: 5px; }
-    .steps { display: flex; justify-content: space-between; padding: 10px 0; background: #fff; font-family: "Host Grotesk", serif; position: relative; width: 100%; }
-    .step-indicator { flex: 1; text-align: center; padding: 10px; font-weight: bold; color: #8b8686; background: #fff; border-radius: 5px; font-family: "Host Grotesk", serif; }
-    .step-indicator.active span { background: black !important; color: white; font-family: "Host Grotesk", serif; }
-    ._1ddzqsn7 { width: 100% !important; }
-    .active { color: black!important; }
-    .active span { background: black; color: white; }
-    input, textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid #ccc; outline: none; font-family: "Host Grotesk", serif; }
-    input:hover, textarea:hover { border: 1px solid black; }
-    .chat-box { width: 100%; padding: 20px; background: #fff; border-radius: 5px; margin-top: 20px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); }
-    .chat-box h3 { margin: 0; font-size: 20px; }
-    .chat-box p { margin: 10px 0 0; font-size: 16px; }
-    h2, label, input, textarea, button { font-family: "Host Grotesk", serif; }
-    .step-1 .bord2 { position: absolute; border: 2px solid #e1dada; width: 100%; left: 0; top: 80px; }
-    .step-1.active .bord { position: absolute; border: 2px solid black; width: 30%; left: 0; top: 80px; }
-    .step-2.active .bord { position: absolute; border: 2px solid black; width: 70%; left: 0; top: 80px; }
-    .step-3.active .bord { position: absolute; border: 2px solid black; width: 100%; left: 0; top: 80px; }
-    .visited span { background: black!important; color: white; }
-    .next, .prev { background: transparent; border: 1px solid gray; width: 100px; color: black; padding: 10px 25px; border-radius: 20px; cursor: pointer; }
-    .next:hover, .prev:hover { background: #000; color: white; }
-    .vfrc-message--extension-Forms { background: white!important; }
-    .step-content { margin-top: 28px; }
-    </style>
-    <!-- Your full HTML structure follows, exactly as you wrote it -->
-    <div class="steps" style="display: flex; gap: 30px; justify-content: space-around; width: 100%;">
-      <style>.vfrc-message--extension-Forms{ background: white!important; }</style>
-      <div class="step-indicator step-1"><span class="bord2"></span><span class="bord"></span><span style="background-color: rgb(218 213 213 / 0%); border: 1px solid; width: 34px; text-align: center; display: inline-flex; align-items: center; height: 34px; justify-content: center; border-radius: 50%;">1</span></div>
-      <div class="step-indicator step-2"><span class="bord"></span><span style="background-color: rgb(218 213 213 / 0%); border: 1px solid; width: 34px; text-align: center; display: inline-flex; align-items: center; height: 34px; justify-content: center; border-radius: 50%;">2</span></div>
-      <div class="step-indicator step-3"><span class="bord"></span><span style="background-color: rgb(218 213 213 / 0%); border: 1px solid; width: 34px; text-align: center; display: inline-flex; align-items: center; height: 34px; justify-content: center; border-radius: 50%;">3</span></div>
-    </div>
-    <div class="step-content">
-      <!-- All 3 steps as you originally had them -->
-      <!-- ... (Contact Info, Concerns, Review & Submit) ... -->
-    </div>
+    formContainer.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300..800&display=swap');
+        .form-container {
+          font-family: "Host Grotesk", serif;
+          background: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          width: 100%;
+        }
+        .steps {
+          display: flex;
+          justify-content: space-around;
+          gap: 30px;
+          padding: 10px 0;
+        }
+        .step-indicator {
+          flex: 1;
+          text-align: center;
+          font-weight: bold;
+          color: #8b8686;
+        }
+        .step-indicator span {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          border: 1px solid #ccc;
+        }
+        .step-indicator.active span,
+        .step-indicator.visited span {
+          background: black;
+          color: white;
+        }
+        input, textarea {
+          width: 100%;
+          padding: 10px;
+          margin: 10px 0;
+          border-radius: 10px;
+          border: 1px solid #ccc;
+          font-family: "Host Grotesk", serif;
+        }
+        input:hover, textarea:hover {
+          border-color: black;
+        }
+        .next, .prev {
+          background: transparent;
+          border: 1px solid gray;
+          padding: 10px 25px;
+          border-radius: 20px;
+          cursor: pointer;
+        }
+        .next:hover, .prev:hover {
+          background: #000;
+          color: white;
+        }
+        .chat-box {
+          width: 100%;
+          padding: 20px;
+          background: #fff;
+          border-radius: 5px;
+          margin-top: 20px;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chat-box h3 {
+          margin: 0;
+          font-size: 20px;
+        }
+        .chat-box p {
+          margin: 10px 0 0;
+          font-size: 16px;
+        }
+      </style>
+
+      <div class="steps">
+        <div class="step-indicator step-1"><span>1</span></div>
+        <div class="step-indicator step-2"><span>2</span></div>
+        <div class="step-indicator step-3"><span>3</span></div>
+      </div>
+
+      <div class="step-content">
+        <div class="step step-1">
+          <h2>Contact Information</h2>
+          <p>Please provide your details to help us serve you better</p>
+          <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+              <label>First Name*</label>
+              <input type="text" class="name" required />
+            </div>
+            <div style="flex: 1;">
+              <label>Last Name*</label>
+              <input type="text" class="Lastname" required />
+            </div>
+          </div>
+          <label>Email*</label>
+          <input type="email" class="email" required />
+          <label>Phone Number</label>
+          <input type="tel" class="phone" />
+          <div style="text-align: right;">
+            <button type="button" class="next">Next</button>
+          </div>
+        </div>
+
+        <div class="step step-2" style="display:none;">
+          <h2>Concerns</h2>
+          <p>Describe your issue or inquiry</p>
+          <label>Message</label>
+          <textarea class="Message" required></textarea>
+          <div style="display: flex; justify-content: space-between;">
+            <button type="button" class="prev">Back</button>
+            <button type="button" class="next">Next</button>
+          </div>
+        </div>
+
+        <div class="step step-3" style="display:none;">
+          <h2>Review and Submit</h2>
+          <p>Review your information before submitting</p>
+          <div id="review-info"></div>
+          <div style="display: flex; justify-content: space-between;">
+            <button type="button" class="prev">Edit</button>
+            <button type="submit" class="next">Submit</button>
+          </div>
+        </div>
+      </div>
     `;
 
-    // JavaScript logic for steps, form interaction, validation, review, etc. exactly as in your original code
     const steps = formContainer.querySelectorAll(".step");
-    const stepIndicators = formContainer.querySelectorAll(".step-indicator");
+    const indicators = formContainer.querySelectorAll(".step-indicator");
     const reviewInfo = formContainer.querySelector("#review-info");
 
-    function showStep(step) {
-      steps.forEach((el, index) => {
-        el.style.display = index === step - 1 ? "block" : "none";
-        if (index < step - 1) stepIndicators[index].classList.add("visited");
+    const showStep = (step) => {
+      steps.forEach((s, i) => {
+        s.style.display = i === step - 1 ? 'block' : 'none';
+        indicators[i].classList.toggle('active', i === step - 1);
+        if (i < step - 1) indicators[i].classList.add('visited');
       });
-      stepIndicators.forEach((el, index) => el.classList.toggle("active", index === step - 1));
-      if (step === 3) updateReviewInfo();
-    }
 
-    function validateStep() {
-      if (!steps[currentStep - 1]) return true;
-      const currentInputs = steps[currentStep - 1].querySelectorAll("input, textarea");
-      for (let input of currentInputs) {
+      if (step === 3) updateReviewInfo();
+    };
+
+    const validateStep = () => {
+      const inputs = steps[currentStep - 1].querySelectorAll("input, textarea");
+      for (let input of inputs) {
         if (!input.checkValidity()) {
-          alert(`Invalid input: ${input.name}`);
+          alert(`Invalid input: ${input.name || 'field'}`);
           return false;
         }
       }
       return true;
-    }
+    };
 
-    function updateReviewInfo() {
-      if (!reviewInfo) return;
+    const updateReviewInfo = () => {
       reviewInfo.innerHTML = `
-        <div style="background: #F5F5F7; padding: 10px; border-radius: 5px; margin-top: 20px;">
-          <h2>Contact Information</h2>
-          <p>First and Last Name: <span style="color: gray;">${formContainer.querySelector(".name").value} ${formContainer.querySelector(".Lastname").value}</span></p>
-          <p>Email: <span style="color: gray;">${formContainer.querySelector(".email").value}</span></p>
-          <p>Phone Number: <span style="color: gray;">${formContainer.querySelector(".phone").value}</span></p>
-        </div>
-        <div style="background: #F5F5F7; padding: 10px; border-radius: 5px; margin-top: 20px;">
-          <h2>Concerns</h2>
-          <p>Message: <span style="color: gray;">${formContainer.querySelector(".Message").value}</span></p>
+        <div style="background: #F5F5F7; padding: 10px; border-radius: 5px;">
+          <p><strong>Name:</strong> ${formContainer.querySelector('.name').value} ${formContainer.querySelector('.Lastname').value}</p>
+          <p><strong>Email:</strong> ${formContainer.querySelector('.email').value}</p>
+          <p><strong>Phone:</strong> ${formContainer.querySelector('.phone').value}</p>
+          <p><strong>Message:</strong> ${formContainer.querySelector('.Message').value}</p>
         </div>
       `;
-    }
+    };
 
-    function createChatBox() {
+    const createChatBox = () => {
       const chatBox = document.createElement('div');
       chatBox.classList.add('chat-box');
       chatBox.innerHTML = `
-        <style>
-          .vfrc-message--extension-Forms { width: 100%; background: #fff; }
-          h3, p { font-family: "Host Grotesk", serif; }
-        </style>
-        <div style="display: flex; flex-direction: column; align-items: center; height: 500px;">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 40px; width: 38px; fill: black;">
-            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
-          </svg>
-          <h3>Thank you for your submission!</h3>
-          <p>Your form has been successfully submitted.<br>Our team will get back to you shortly.</p>
-        </div>
+        <h3>Thank you for your submission!</h3>
+        <p>Your form has been successfully submitted.<br>We will get back to you shortly.</p>
       `;
       formContainer.replaceWith(chatBox);
-    }
+    };
 
-    formContainer.addEventListener("click", function (event) {
-      if (event.target.classList.contains("next")) {
+    formContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("next")) {
         if (!validateStep()) return;
         currentStep++;
         showStep(currentStep);
-      } else if (event.target.classList.contains("prev")) {
+      } else if (e.target.classList.contains("prev")) {
         currentStep--;
         showStep(currentStep);
       }
     });
 
-    formContainer.addEventListener("submit", function (event) {
-      event.preventDefault();
+    formContainer.addEventListener("submit", (e) => {
+      e.preventDefault();
       if (!validateStep()) return;
 
       const formData = {
@@ -138,7 +214,7 @@ export const FormExtension = {
 
       window.voiceflow.chat.interact({
         type: 'complete',
-        payload: formData,
+        payload: formData
       });
 
       createChatBox();
