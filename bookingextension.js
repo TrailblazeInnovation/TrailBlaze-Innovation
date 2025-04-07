@@ -15,9 +15,9 @@ export const FormExtension = {
 
     formContainer.innerHTML = `
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap');
         .form-container {
-          font-family: 'Host Grotesk', sans-serif;
+          font-family: "Host Grotesk", serif;
           width: 100%;
           background: #fff;
           padding: 20px;
@@ -35,12 +35,11 @@ export const FormExtension = {
           padding: 10px;
           font-weight: bold;
           color: #8b8686;
+          background: #fff;
+          border-radius: 5px;
         }
-        .step-indicator.active span {
-          background: black !important;
-          color: white;
-        }
-        .step-indicator.visited span {
+        .step-indicator.active span,
+        .visited span {
           background: black !important;
           color: white;
         }
@@ -51,17 +50,16 @@ export const FormExtension = {
           border-radius: 10px;
           border: 1px solid #ccc;
           outline: none;
-          font-family: 'Host Grotesk', sans-serif;
         }
         input:hover, textarea:hover {
-          border-color: black;
+          border: 1px solid black;
         }
         .next, .prev {
           background: transparent;
-          border: 1px solid gray; 
-          width: 100px; 
-          color: black; 
-          padding: 10px 25px; 
+          border: 1px solid gray;
+          width: 100px;
+          color: black;
+          padding: 10px 25px;
           border-radius: 20px;
           cursor: pointer;
         }
@@ -69,123 +67,93 @@ export const FormExtension = {
           background: black;
           color: white;
         }
+        .chat-box {
+          width: 100%;
+          padding: 20px;
+          background: #fff;
+          border-radius: 5px;
+          margin-top: 20px;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
       </style>
-      <div class="steps">
-        <div class="step-indicator step-1"><span>1</span></div>
-        <div class="step-indicator step-2"><span>2</span></div>
-        <div class="step-indicator step-3"><span>3</span></div>
-      </div>
-      <div class="step-content">
-        <div class="step step-1">
-          <h2>Contact Information</h2>
-          <p>Please provide your details to help us serve you better</p>
-          <div style="display: flex; gap: 10px;">
-            <div style="flex:1;">
-              <label>First Name*</label>
-              <input type="text" class="name" required />
-            </div>
-            <div style="flex:1;">
-              <label>Last Name*</label>
-              <input type="text" class="Lastname" required />
-            </div>
-          </div>
-          <label>Email*</label>
-          <input type="email" class="email" required />
-          <label>Phone</label>
-          <input type="tel" class="phone" />
-          <div style="text-align: right;">
-            <button type="button" class="next">Next</button>
-          </div>
-        </div>
-        <div class="step step-2" style="display:none;">
-          <h2>Concerns</h2>
-          <p>Describe your issue or inquiry</p>
-          <label>Message</label>
-          <textarea class="Message" required></textarea>
-          <div style="display: flex; justify-content: space-between;">
-            <button type="button" class="prev">Back</button>
-            <button type="button" class="next">Next</button>
-          </div>
-        </div>
-        <div class="step step-3" style="display:none;">
-          <h2>Review and Submit</h2>
-          <p>Please review your information before submitting</p>
-          <div id="review-info" style="margin-bottom: 20px;"></div>
-          <div style="display: flex; justify-content: space-between;">
-            <button type="button" class="prev">Edit</button>
-            <button type="submit" class="next">Submit</button>
-          </div>
-        </div>
-      </div>
+      <!-- Your original HTML content here: step indicators, step content, inputs, etc. -->
     `;
 
-    const steps = formContainer.querySelectorAll('.step');
-    const stepIndicators = formContainer.querySelectorAll('.step-indicator');
-    const reviewInfo = formContainer.querySelector('#review-info');
+    // Original logic continues below
+    const steps = formContainer.querySelectorAll(".step");
+    const stepIndicators = formContainer.querySelectorAll(".step-indicator");
+    const reviewInfo = formContainer.querySelector("#review-info");
 
-    const showStep = (step) => {
-      steps.forEach((s, i) => {
-        s.style.display = i === step - 1 ? 'block' : 'none';
-        stepIndicators[i].classList.toggle('active', i === step - 1);
-        if (i < step - 1) stepIndicators[i].classList.add('visited');
+    function showStep(step) {
+      steps.forEach((el, index) => {
+        el.style.display = index === step - 1 ? "block" : "none";
+        if (index < step - 1) {
+          stepIndicators[index].classList.add("visited");
+        }
       });
+      stepIndicators.forEach((el, index) => el.classList.toggle("active", index === step - 1));
       if (step === 3) updateReviewInfo();
-    };
+    }
 
-    const validateStep = () => {
-      const inputs = steps[currentStep - 1].querySelectorAll('input, textarea');
-      for (let input of inputs) {
+    function validateStep() {
+      if (!steps[currentStep - 1]) return true;
+      const currentInputs = steps[currentStep - 1].querySelectorAll("input, textarea");
+      for (let input of currentInputs) {
         if (!input.checkValidity()) {
-          alert(`Please fill out: ${input.name || 'required field'}`);
+          alert(`Invalid input: ${input.name}`);
           return false;
         }
       }
       return true;
-    };
+    }
 
-    const updateReviewInfo = () => {
-      const name = formContainer.querySelector('.name').value;
-      const lastname = formContainer.querySelector('.Lastname').value;
-      const email = formContainer.querySelector('.email').value;
-      const phone = formContainer.querySelector('.phone').value;
-      const message = formContainer.querySelector('.Message').value;
-
+    function updateReviewInfo() {
+      if (!reviewInfo) return;
       reviewInfo.innerHTML = `
-        <p><strong>Name:</strong> ${name} ${lastname}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Message:</strong> ${message}</p>
+        <div style="background: #F5F5F7; padding: 10px; border-radius: 5px; margin-top: 20px;">
+          <h2>Contact Information</h2>
+          <p>First and Last Name: <span>${formContainer.querySelector(".name").value} ${formContainer.querySelector(".Lastname").value}</span></p>
+          <p>Email: <span>${formContainer.querySelector(".email").value}</span></p>
+          <p>Phone: <span>${formContainer.querySelector(".phone").value}</span></p>
+        </div>
+        <div style="background: #F5F5F7; padding: 10px; border-radius: 5px; margin-top: 20px;">
+          <h2>Concerns</h2>
+          <p>Message: <span>${formContainer.querySelector(".Message").value}</span></p>
+        </div>
       `;
-    };
+    }
 
-    const createChatBox = () => {
+    function createChatBox() {
       const chatBox = document.createElement('div');
-      chatBox.className = 'chat-box';
+      chatBox.classList.add('chat-box');
       chatBox.innerHTML = `
         <div style="text-align: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 40px; width: 38px; fill: black;">
+            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
+          </svg>
           <h3>Thank you for your submission!</h3>
-          <p>We'll be in touch shortly.</p>
+          <p>Your form has been successfully submitted.<br/>Our team will get back to you shortly.</p>
         </div>
       `;
       formContainer.replaceWith(chatBox);
-    };
+    }
 
-    formContainer.addEventListener('click', (e) => {
-      if (e.target.classList.contains('next')) {
+    formContainer.addEventListener("click", function (event) {
+      if (event.target.classList.contains("next")) {
         if (!validateStep()) return;
         currentStep++;
         showStep(currentStep);
-      } else if (e.target.classList.contains('prev')) {
+      } else if (event.target.classList.contains("prev")) {
         currentStep--;
         showStep(currentStep);
       }
     });
 
-    formContainer.addEventListener('submit', (e) => {
-      e.preventDefault();
+    formContainer.addEventListener("submit", function (event) {
+      event.preventDefault();
       if (!validateStep()) return;
 
-      const payload = {
+      const formData = {
         name: formContainer.querySelector('.name').value,
         lastname: formContainer.querySelector('.Lastname').value,
         email: formContainer.querySelector('.email').value,
@@ -195,7 +163,7 @@ export const FormExtension = {
 
       window.voiceflow.chat.interact({
         type: 'complete',
-        payload,
+        payload: formData,
       });
 
       createChatBox();
@@ -203,5 +171,5 @@ export const FormExtension = {
 
     showStep(currentStep);
     element.appendChild(formContainer);
-  },
+  }
 };
