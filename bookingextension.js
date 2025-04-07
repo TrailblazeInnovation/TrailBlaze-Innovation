@@ -3,7 +3,7 @@ export const FormExtension = {
   type: 'response',
   match: ({ trace }) =>
     trace?.type === 'Custom_Form' || (trace.payload && trace.payload?.name === 'Custom_Form'),
-  render: ({ trace, element }) => {
+  render: ({ element }) => {
     // Load the font
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700&display=swap';
