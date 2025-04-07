@@ -325,11 +325,4 @@ export const FormExtension = {
                   type: 'complete',
                   payload: formData,
               });
-  
-              createChatBox();  // Show the confirmation chat box
-          });
-  
-          showStep(currentStep);
-          element.appendChild(formContainer);
-      },
   };
