@@ -2,7 +2,7 @@ export const FormExtension = {
   name: 'Forms',
   type: 'response',
   match: ({ trace }) =>
-    trace?.type === 'Custom_Form' || (trace.payload && trace.payload.name === 'Custom_Form'),
+    trace?.type === 'Custom_Form' || (trace.payload && trace.payload?.name === 'Custom_Form'),
   render: ({ trace, element }) => {
     // Load the font
     const link = document.createElement('link');
