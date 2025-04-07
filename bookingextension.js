@@ -325,4 +325,5 @@ export const FormExtension = {
                   type: 'complete',
                   payload: formData,
               });
+          }
   };
