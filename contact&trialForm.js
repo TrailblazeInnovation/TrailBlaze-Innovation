@@ -12,7 +12,7 @@
           const formContainer = document.createElement('form');
           formContainer.classList.add('form-container');
           let currentStep = 1;
-          const { titleContactInformation, undertitleContactInformation, firstName, lastName, email, phoneNumber, next, back, titleConcerns, undertitleConcerns, message, titleReview, undertitleReview, edit, submit, firstAndLastname, thankSubmission, formSubmitted, formTeam } = trace.payload;
+          const { titleContactInformation, undertitleContactInformation, firstName, lastName, email, phoneNumber, company, next, back, titleConcerns, undertitleConcerns, message, titleReview, undertitleReview, edit, submit, firstAndLastname, thankSubmission, formSubmitted, formTeam } = trace.payload;
 
           formContainer.innerHTML = `
           <style>
@@ -168,7 +168,7 @@
             <input type="email" class="email" name="email" required><br/>
             <label for="phone">${phoneNumber}</label>
             <input type="tel" class="phone" name="phone"> <br/>
-            <label for="Company">Company Name</label>
+            <label for="Company">${company}</label>
             <input type="text" class="Company" name="Company"> 
 
              <div style="display: flex; justify-content: right; gap: 30px; margin-top: 17px;">
@@ -256,7 +256,7 @@
                       <p style="font-family: "Host Grotesk", serif;">${phoneNumber}<br/> <span style="color: gray;"> ${formContainer.querySelector(".phone").value} </span></p>
                     </div>
                     <div>
-                      <p style="font-family: "Host Grotesk", serif;">Company Name: <br/> <span style="color: gray;"> ${formContainer.querySelector(".Company").value} </span></p>
+                      <p style="font-family: "Host Grotesk", serif;">${company}<br/> <span style="color: gray;"> ${formContainer.querySelector(".Company").value} </span></p>
                     </div>
                   </div>
   
