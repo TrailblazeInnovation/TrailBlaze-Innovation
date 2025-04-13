@@ -1,18 +1,19 @@
-export const FormExtension = {
+      export const FormExtension = {
       name: 'Forms',
       type: 'response',
       match: ({ trace }) =>
           trace?.type === 'Custom_Form' || (trace.payload && trace.payload?.name === 'Custom_Form'),
       render: ({ trace, element }) => {
-            const link = document.createElement('link');
-            link.href = 'https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700&display=swap';
-            link.rel = 'stylesheet';
-            document.head.appendChild(link);
-            
-            const formContainer = document.createElement('form');
+          const link = document.createElement('link');
+          link.href = 'https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700&display=swap';
+          link.rel = 'stylesheet';
+          document.head.appendChild(link);
+
+          const formContainer = document.createElement('form');
           formContainer.classList.add('form-container');
           let currentStep = 1;
-  
+          const { titleContactInformation, undertitleContactInformation, firstName, lastName, email, phoneNumber, company, next, back, titleConcerns, undertitleConcerns, message, titleReview, undertitleReview, edit, submit, firstAndLastname, thankSubmission, formSubmitted, formTeam } = trace.payload;
+
           formContainer.innerHTML = `
           <style>
       @import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap');
@@ -58,7 +59,6 @@ export const FormExtension = {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            margin-top: 0px;
             border-radius: 10px;
             border: 1px solid #ccc;
             outline: none;
@@ -85,9 +85,6 @@ export const FormExtension = {
             h2, label, input, textarea, button {
             font-family: "Host Grotesk", serif;
         }
-            lable{
-            font-size: 14px;
-            }
         .steps {
             position: relative;
             width: 100%;
@@ -130,7 +127,7 @@ export const FormExtension = {
         .next, .prev{
             background: transparent;
             border: 1px solid gray; 
-            width: 100px; 
+            width: 150px; 
             color: black; 
             padding: 10px 25px; 
             border-radius: 20px;
@@ -155,47 +152,47 @@ export const FormExtension = {
       </div>
     <div class="step-content">
         <div class="step step-1">
-            <h2 style="margin: 0!important;">Contact Information</h2>
-            <p style="margin: 7px 0px!important;">Please provide your details to help us serve you better        </p><br/>
+            <h2 style="margin: 0!important;">${titleContactInformation}</h2>
+            <p style="margin: 7px 0px!important;">${undertitleContactInformation}</p><br/>
             <div style="display: flex; width: 100%; justify-content: space-between;">
               <div style="width: 45%;">
-                  <label for="name">First Name*</label>
+                  <label for="name">${firstName}*</label>
                   <input type="text" class="name" name="name" required>
               </div>
               <div style="width: 45%;">
-                  <label for="name">Last Name*</label>
+                  <label for="name">${lastName}*</label>
                   <input type="text" class="Lastname" name="Lastname" required>
               </div>
             </div>
-            <label for="email">Email*</label>
+            <label for="email">${email}*</label>
             <input type="email" class="email" name="email" required><br/>
-            <label for="phone">Phone Number</label>
+            <label for="phone">${phoneNumber}</label>
             <input type="tel" class="phone" name="phone"> <br/>
-            <label for="Company">Company Name</label>
+            <label for="Company">${company}</label>
             <input type="text" class="Company" name="Company"> 
 
              <div style="display: flex; justify-content: right; gap: 30px; margin-top: 17px;">
-              <button type="button" class="next">Next</button>
+              <button type="button" class="next">${next}</button>
           </div>
         </div>
         <div class="step step-2" style="display: none;">
           <style> .vfrc-message--extension-Forms{width: 100%!important;}</style>
-            <h2 style="margin: 0!important;">Concerns</h2>
-            <p style="margin: 7px 0px!important;">Describe your issue or inquiry so we can assist you effectively </p><br/>
-            <label for="Message">Message</label>
+            <h2 style="margin: 0!important;">${titleConcerns}</h2>
+            <p style="margin: 7px 0px!important;">${undertitleConcerns}</p><br/>
+            <label for="Message">${message}</label>
             <textarea class="Message" name="Message" style="height: 100px;" required></textarea>
             <div style="display: flex; justify-content: space-between; gap: 30px; margin-top: 17px;">
-              <button type="button" class="prev">Back</button>
-              <button type="button" class="next">Next</button>
+              <button type="button" class="prev">${back}</button>
+              <button type="button" class="next">${next}</button>
           </div>
         </div>
         <div class="step step-3" style="display: none;">
-            <h2 style="margin: 0!important;">Review and Submit</h2>
-            <p style="margin: 7px 0px!important;">Please review your information before submitting</p><br/>
+            <h2 style="margin: 0!important;">${titleReview}</h2>
+            <p style="margin: 7px 0px!important;">${undertitleReview}</p><br/>
             <div id="review-info"></div>
             <div style="display: flex; justify-content: space-between; gap: 30px; margin-top: 17px;">
-              <button type="button" class="prev">Edit</button>
-              <button type="submit" class="next">Submit</button>
+              <button type="button" class="prev">${edit}</button>
+              <button type="submit" class="next">${submit}</button>
           </div>
         </div>
     </div>
@@ -247,29 +244,29 @@ export const FormExtension = {
               reviewInfo.innerHTML = `
                   <div style="background: #F5F5F7; padding: 10px; border-radius: 5px; margin-top: 20px;">
                     <div>
-                        <h2 style="margin: 0!important;">Contact Information</h2>
+                        <h2 style="margin: 0!important;">${titleContactInformation}</h2>
                     </div>
                     <div>
-                        <p style="font-family: "Host Grotesk", serif;">First and Last Name: <br/> <span style="color: gray;"> ${formContainer.querySelector(".name").value} ${formContainer.querySelector(".Lastname").value} </span></p>
+                        <p style="font-family: "Host Grotesk", serif;">${firstAndLastname}<br/> <span style="color: gray;"> ${formContainer.querySelector(".name").value} ${formContainer.querySelector(".Lastname").value} </span></p>
                     </div>
                     <div>
-                      <p style="font-family: "Host Grotesk", serif;">Email: <br/> <span style="color: gray;"> ${formContainer.querySelector(".email").value} </span></p>
+                      <p style="font-family: "Host Grotesk", serif;">${email}<br/> <span style="color: gray;"> ${formContainer.querySelector(".email").value} </span></p>
                     </div>
                     <div>
-                      <p style="font-family: "Host Grotesk", serif;">Phone Number: <br/> <span style="color: gray;"> ${formContainer.querySelector(".phone").value} </span></p>
+                      <p style="font-family: "Host Grotesk", serif;">${phoneNumber}<br/> <span style="color: gray;"> ${formContainer.querySelector(".phone").value} </span></p>
                     </div>
                     <div>
-                      <p style="font-family: "Host Grotesk", serif;">Company Name: <br/> <span style="color: gray;"> ${formContainer.querySelector(".Company").value} </span></p>
+                      <p style="font-family: "Host Grotesk", serif;">${company}<br/> <span style="color: gray;"> ${formContainer.querySelector(".Company").value} </span></p>
                     </div>
                   </div>
   
   
                    <div style="background: #F5F5F7; padding: 10px; border-radius: 5px; margin-top: 20px;">
                     <div>
-                        <h2 style="margin: 0!important;">Concerns</h2>
+                        <h2 style="margin: 0!important;">${titleConcerns}</h2>
                     </div>
                     <div>
-                      <p style="font-family: "Host Grotesk", serif;">Message: <br/> <span style="color: gray;"> ${formContainer.querySelector(".Message").value} </span></p>
+                      <p style="font-family: "Host Grotesk", serif;">${message}<br/> <span style="color: gray;"> ${formContainer.querySelector(".Message").value} </span></p>
                     </div>
                   </div>
               `;
@@ -295,8 +292,8 @@ export const FormExtension = {
                           <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
                         </svg>
                       </div>
-                      <h3>Thank you for your submission!</h3>
-                      <p>Your form has been successfully submitted.<br/> Our team will get back to you shortly.</p>
+                      <h3>${thankSubmission}</h3>
+                      <p>${formSubmitted}<br/>${formTeam}</p>
                     </div>
   
                   </div>
@@ -328,6 +325,7 @@ export const FormExtension = {
                   lastname: formContainer.querySelector('.Lastname').value,
                   email: formContainer.querySelector('.email').value,
                   phone: formContainer.querySelector('.phone').value,
+                  company: formContainer.querySelector('.Company').value,
                   message: formContainer.querySelector('.Message').value,
               };
   
